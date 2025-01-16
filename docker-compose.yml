@@ -1,0 +1,11 @@
+﻿services:
+  ggstats:
+    image: aedile:latest
+    container_name: aedile
+    build:
+      context: /home/docker/aedile
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DEV_SERVER_TOKEN=CHANGE_ME
