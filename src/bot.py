@@ -51,10 +51,20 @@ class BunkerSpecParseError(TargetNotFoundError):
         super().__init__(name,message)
 
 
+async def leave_unauthorized_guilds(client, authorized_guilds):
+    for guild in client.guilds:
+        if guild.id not in authorized_guilds:
+            print("Unauthorized guild:", guild.name, " / ", guild.id)
+            await guild.leave()
+
+
 def run_discord_bot():
     intents = discord.Intents.default()
     intents.message_content = True
     client = main.commands.Bot(command_prefix="!", intents=discord.Intents.all())
+
+    authorized_guilds = [1328767065330417684, # Gang de l'Ombre
+                         1201556945925058562] # GG Dev.
 
     @client.event
     async def on_ready():
@@ -63,6 +73,7 @@ def run_discord_bot():
             synced = await client.tree.sync()
             print(f"Synced {len(synced)} commands")
             main.list_guilds(client)
+            # await leave_unauthorized_guilds(client, authorized_guilds)
         except Exception as e:
             print(e)
 
